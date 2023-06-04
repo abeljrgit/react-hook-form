@@ -50,6 +50,7 @@ export const YoutubeForm = () => {
         dob: new Date(),
       };
     },
+    mode: 'all',
   });
   const {
     errors,
