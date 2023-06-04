@@ -21,7 +21,7 @@ type FormValues = {
 };
 
 export const YoutubeForm = () => {
-  const { register, control, handleSubmit, formState, watch } =
+  const { register, control, handleSubmit, formState, watch, getValues } =
     useForm<FormValues>({
       defaultValues: async () => {
         const response = await fetch(
@@ -64,6 +64,13 @@ export const YoutubeForm = () => {
 
   const watchUsername = watch(['username', 'email']);
   const watchForm = watch();
+
+  const handleGetValues = () => {
+    console.log('Get Values', getValues());
+  };
+  const handleGetSocial = () => {
+    console.log('Get Social', getValues('social'));
+  };
 
   renderCount++;
 
@@ -216,6 +223,12 @@ export const YoutubeForm = () => {
         </div>
 
         <button>Submit</button>
+        <button type="button" onClick={handleGetValues}>
+          Get Values
+        </button>
+        <button type="button" onClick={handleGetSocial}>
+          Get Social
+        </button>
       </form>
       <DevTool control={control} />
     </div>
