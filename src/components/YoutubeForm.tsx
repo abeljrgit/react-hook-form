@@ -29,6 +29,7 @@ export const YoutubeForm = () => {
     watch,
     getValues,
     setValue,
+    reset,
   } = useForm<FormValues>({
     defaultValues: async () => {
       const response = await fetch(
@@ -86,6 +87,12 @@ export const YoutubeForm = () => {
 
     return () => subscription.unsubscribe();
   }, [watch]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   const watchUsername = watch(['username', 'email']);
   const watchForm = watch();
@@ -263,6 +270,9 @@ export const YoutubeForm = () => {
         </div>
 
         <button disabled={!isDirty || !isValid}>Submit</button>
+        <button type="button" onClick={() => reset()}>
+          Reset
+        </button>
         <button type="button" onClick={handleGetValues}>
           Get Values
         </button>
