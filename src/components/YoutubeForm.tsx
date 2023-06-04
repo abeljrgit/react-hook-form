@@ -50,7 +50,9 @@ export const YoutubeForm = () => {
       };
     },
   });
-  const { errors } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+
+  console.log({ touchedFields, dirtyFields, isDirty });
 
   const { fields, append, remove } = useFieldArray({
     name: 'phNumbers',
