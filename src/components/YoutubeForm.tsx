@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 
@@ -20,27 +21,28 @@ type FormValues = {
 };
 
 export const YoutubeForm = () => {
-  const { register, control, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: async () => {
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/users/1'
-      );
-      const data = await response.json();
-      return {
-        username: 'Batman',
-        email: data.email,
-        channel: '',
-        social: {
-          twitter: '',
-          facebook: '',
-        },
-        phoneNumbers: ['', ''],
-        phNumbers: [{ number: '' }],
-        age: 0,
-        dob: new Date(),
-      };
-    },
-  });
+  const { register, control, handleSubmit, formState, watch } =
+    useForm<FormValues>({
+      defaultValues: async () => {
+        const response = await fetch(
+          'https://jsonplaceholder.typicode.com/users/1'
+        );
+        const data = await response.json();
+        return {
+          username: 'Batman',
+          email: data.email,
+          channel: '',
+          social: {
+            twitter: '',
+            facebook: '',
+          },
+          phoneNumbers: ['', ''],
+          phNumbers: [{ number: '' }],
+          age: 0,
+          dob: new Date(),
+        };
+      },
+    });
   const { errors } = formState;
 
   const { fields, append, remove } = useFieldArray({
@@ -52,11 +54,24 @@ export const YoutubeForm = () => {
     console.log('Form submitted', data);
   };
 
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  const watchUsername = watch(['username', 'email']);
+  const watchForm = watch();
+
   renderCount++;
 
   return (
     <div>
       <h1>Youtube Form {renderCount / 2}</h1>
+      <h2>Watched value: {watchUsername}</h2>
+      <h2>Watched from: {JSON.stringify(watchForm)}</h2>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="form-control">
           <label htmlFor="username">Username</label>
