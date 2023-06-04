@@ -21,28 +21,35 @@ type FormValues = {
 };
 
 export const YoutubeForm = () => {
-  const { register, control, handleSubmit, formState, watch, getValues } =
-    useForm<FormValues>({
-      defaultValues: async () => {
-        const response = await fetch(
-          'https://jsonplaceholder.typicode.com/users/1'
-        );
-        const data = await response.json();
-        return {
-          username: 'Batman',
-          email: data.email,
-          channel: '',
-          social: {
-            twitter: '',
-            facebook: '',
-          },
-          phoneNumbers: ['', ''],
-          phNumbers: [{ number: '' }],
-          age: 0,
-          dob: new Date(),
-        };
-      },
-    });
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = useForm<FormValues>({
+    defaultValues: async () => {
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/users/1'
+      );
+      const data = await response.json();
+      return {
+        username: 'Batman',
+        email: data.email,
+        channel: '',
+        social: {
+          twitter: '',
+          facebook: '',
+        },
+        phoneNumbers: ['', ''],
+        phNumbers: [{ number: '' }],
+        age: 0,
+        dob: new Date(),
+      };
+    },
+  });
   const { errors } = formState;
 
   const { fields, append, remove } = useFieldArray({
@@ -70,6 +77,14 @@ export const YoutubeForm = () => {
   };
   const handleGetSocial = () => {
     console.log('Get Social', getValues('social'));
+  };
+
+  const handleSetValues = () => {
+    setValue('username', '', {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
   };
 
   renderCount++;
@@ -228,6 +243,9 @@ export const YoutubeForm = () => {
         </button>
         <button type="button" onClick={handleGetSocial}>
           Get Social
+        </button>
+        <button type="button" onClick={handleSetValues}>
+          Set value
         </button>
       </form>
       <DevTool control={control} />
