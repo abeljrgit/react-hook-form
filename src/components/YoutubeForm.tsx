@@ -38,7 +38,7 @@ export const YoutubeForm = () => {
       const data = await response.json();
       return {
         username: 'Batman',
-        email: data.email,
+        email: '',
         channel: '',
         social: {
           twitter: '',
@@ -165,6 +165,14 @@ export const YoutubeForm = () => {
                     !fieldValue.endsWith('baddomain.com') ||
                     'This domain is not supported'
                   );
+                },
+                emailAvailable: async (fieldValue) => {
+                  const response = await fetch(
+                    `https://jsonplaceholder.typicode.com/users?email=${fieldValue}`
+                  );
+                  const data = await response.json();
+
+                  return data.length == 0 || 'Email already exists.';
                 },
               },
             })}
