@@ -30,6 +30,7 @@ export const YoutubeForm = () => {
     getValues,
     setValue,
     reset,
+    trigger,
   } = useForm<FormValues>({
     defaultValues: async () => {
       const response = await fetch(
@@ -290,6 +291,12 @@ export const YoutubeForm = () => {
         </button>
         <button type="button" onClick={handleSetValues}>
           Set value
+        </button>
+        <button type="button" onClick={() => trigger()}>
+          Validate ALL on Click
+        </button>
+        <button type="button" onClick={() => trigger('channel')}>
+          Validate specific field
         </button>
       </form>
       <DevTool control={control} />
